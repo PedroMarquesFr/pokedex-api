@@ -5,6 +5,21 @@ using CustomerCrud.Repositories;
 
 namespace CustomerCrud.Controllers;
 
-public class CustomerController
+[ApiController]
+[Route("controller")]
+public class CustomerController : ControllerBase
 {
+    private ICustomerRepository CustomerRepository;
+    public CustomerController(ICustomerRepository customerRepository)
+    {
+        CustomerRepository = customerRepository;
+    }
+
+    [HttpGet(Name = "GetAll")]
+    public ActionResult GetAll()
+    {
+        var customers = CustomerRepository.GetAll();
+        if (customers == null) return NotFound("Customers not found");
+        return Ok(customers);
+    }
 }
